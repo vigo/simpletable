@@ -4,11 +4,14 @@ import (
 	"fmt"
 	"strings"
 	"unicode/utf8"
+
+	"github.com/tj/go/term"
 )
 
 // content is a cell content
 type content struct {
 	c []string // content lines (trimmed)
+	s []string // content lines (stripped of ansi escape sequences)
 	w int      // meta content width
 }
 
@@ -16,7 +19,7 @@ type content struct {
 func (c *content) maxLinewidth() int {
 	w := 0
 
-	for _, r := range c.c {
+	for _, r := range c.s {
 		l := utf8.RuneCountInString(r)
 		if l > w {
 			w = l
@@ -71,7 +74,7 @@ func (c *content) lines(a int) []string {
 
 // line formats content line
 func (c *content) line(l string, a int) string {
-	len := c.width() - utf8.RuneCountInString(l)
+	len := c.width() - utf8.RuneCountInString(term.Strip(l))
 	if len <= 0 {
 		return l
 	}
@@ -99,12 +102,15 @@ func (c *content) line(l string, a int) string {
 // newContent returns new content object
 func newContent(s string) *content {
 	c := strings.Split(s, "\n")
+	cs := strings.Split(s, "\n")
 
 	for i, v := range c {
 		c[i] = strings.TrimSpace(v)
+		cs[i] = term.Strip(strings.TrimSpace(v))
 	}
 
 	return &content{
 		c: c,
+		s: cs,
 	}
 }
