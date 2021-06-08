@@ -75,18 +75,18 @@ func main() {
 
 	table.Header = &simpletable.Header{
 		Cells: []*simpletable.Cell{
-			{Align: simpletable.AlignCenter, Content: "#"},
-			{Align: simpletable.AlignCenter, Content: "NAME"},
-			{Align: simpletable.AlignCenter, Content: "TAX"},
+			{Align: simpletable.AlignCenter, Text: "#"},
+			{Align: simpletable.AlignCenter, Text: "NAME"},
+			{Align: simpletable.AlignCenter, Text: "TAX"},
 		},
 	}
 
 	subtotal := float64(0)
 	for _, row := range data {
 		r := []*simpletable.Cell{
-			{Align: simpletable.AlignRight, Content: fmt.Sprintf("%d", row[0].(int))},
-			{Content: row[1].(string)},
-			{Align: simpletable.AlignRight, Content: fmt.Sprintf("$ %.2f", row[2].(float64))},
+			{Align: simpletable.AlignRight, Text: fmt.Sprintf("%d", row[0].(int))},
+			{Text: row[1].(string)},
+			{Align: simpletable.AlignRight, Text: fmt.Sprintf("$ %.2f", row[2].(float64))},
 		}
 
 		table.Body.Cells = append(table.Body.Cells, r)
@@ -96,8 +96,8 @@ func main() {
 	table.Footer = &simpletable.Footer{
 		Cells: []*simpletable.Cell{
 			{},
-			{Align: simpletable.AlignRight, Content: "Subtotal"},
-			{Align: simpletable.AlignRight, Content: fmt.Sprintf("$ %.2f", subtotal)},
+			{Align: simpletable.AlignRight, Text: "Subtotal"},
+			{Align: simpletable.AlignRight, Text: fmt.Sprintf("$ %.2f", subtotal)},
 		},
 	}
 
@@ -150,7 +150,7 @@ You can set cell content alignment:
 c := &simpletable.Cell{
 	// or simpletable.AlignLeft (default), or simpletable.AlignCenter
 	Align:   simpletable.AlignRight, 
-	Content: "Subtotal",
+	Text: "Subtotal",
 }
 ```
 
@@ -159,7 +159,7 @@ By analogy with HTML:
 ```go
 c := &simpletable.Cell{
 	Span:    2, // Default: 1
-	Content: "Subtotal",
+	Text: "Subtotal",
 }
 ```
 Note: by default `Span` is `1`. If you try to set it to `0`, the value will still be `1`.
